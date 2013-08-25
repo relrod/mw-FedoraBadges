@@ -5,7 +5,7 @@ $wgExtensionCredits['parserhook'][] = array(
     'name' => 'Fedora Badges',
     'author' => 'Ricky Elrod',
     'url' => 'https://github.com/CodeBlock/mw-FedoraBadges',
-    'description' => 'This extension provides a syntax for displaying ones Fedora Badges',
+    'description' => "This extension provides a syntax for displaying one's Fedora Badges",
     'version'  => 1.0,
 );
 
