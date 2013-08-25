@@ -19,7 +19,7 @@ It also links each badge to its respective information page.
 This simply displays a number (>= 0) which is the number of Fedora Badges that
 $username has received.
 
-## Why is it so slow/How does its caching work/is it realtime?
+## Why is it so slow/How does its caching work/Is it realtime?
 
 Right now mw-FedoraBadges uses the MediaWiki caching system, which means that
 information shown is not realtime (and could be up to 24 hours out of date, by
