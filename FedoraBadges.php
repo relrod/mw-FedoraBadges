@@ -36,7 +36,7 @@ function FedoraBadgesFunction( $parser, $username = '' ) {
   $output = '';
 
   foreach ($json_decoded['assertions'] as $badge) {
-    $output .= '<a href="https://badges.fedoraproject.org/badge/' . htmlspecialchars( $badge['id'] ) . '">';
+    $output .= '<a href="https://badges.fedoraproject.org/badge/' . htmlspecialchars( $badge['id'] ) . '" class="badge">';
     $output .= '  <img height="50" width="50" src="' . $badge['image'] . '" alt="' . $badge['name'] . '" />';
     $output .= '</a>';
   }
