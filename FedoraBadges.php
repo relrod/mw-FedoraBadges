@@ -30,7 +30,7 @@ function FedoraBadgesFunction( $parser, $username = '' ) {
   $json = file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
   $json_decoded = json_decode( $json, true );
   if ( $json_decoded === NULL ) {
-    throw new Exception( 'Failed to decode JSON' );
+    return array ( 'Failed to decode JSON.', 'isHTML' => true );
   }
 
   $output = '';
@@ -56,7 +56,7 @@ function FedoraBadgesCountFunction( $parser, $username = '' ) {
   $json = file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
   $json_decoded = json_decode( $json, true );
   if ( $json_decoded === NULL ) {
-    throw new Exception( 'Failed to decode JSON' );
+    return array ( 'Failed to decode JSON.', 'isHTML' => true );
   }
 
   return count ( $json_decoded['assertions'] );
