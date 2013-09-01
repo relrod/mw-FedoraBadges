@@ -27,7 +27,7 @@ function FedoraBadgesFunction( $parser, $username = '' ) {
   // 24-hours out of date.
   //$parser->disableCache();
 
-  $json = file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
+  $json = @file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
   $json_decoded = json_decode( $json, true );
   if ( $json_decoded === NULL ) {
     return array ( 'Failed to decode JSON.', 'isHTML' => true );
@@ -53,7 +53,7 @@ function FedoraBadgesCountFunction( $parser, $username = '' ) {
   // 24-hours out of date.
   //$parser->disableCache();
 
-  $json = file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
+  $json = @file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
   $json_decoded = json_decode( $json, true );
   if ( $json_decoded === NULL ) {
     return array ( 'Failed to decode JSON.', 'isHTML' => true );
