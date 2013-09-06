@@ -6,7 +6,7 @@ $wgExtensionCredits['parserhook'][] = array(
     'author' => 'Ricky Elrod',
     'url' => 'https://github.com/CodeBlock/mw-FedoraBadges',
     'description' => "This extension provides a syntax for displaying one's Fedora Badges",
-    'version'  => 1.0,
+    'version'  => 1.1,
 );
 
 $wgHooks['ParserFirstCallInit'][] = 'FedoraBadgesSetupParserFunction';
