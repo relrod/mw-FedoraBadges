@@ -36,8 +36,10 @@ function FedoraBadgesFunction( $parser, $username = '' ) {
   $output = '';
 
   foreach ($json_decoded['assertions'] as $badge) {
-    $output .= '<a href="https://badges.fedoraproject.org/badge/' . htmlspecialchars( $badge['id'] ) . '" class="badge" title="' . $badge['name'] . '">';
-    $output .= '  <img height="50" width="50" src="' . $badge['image'] . '" alt="' . $badge['name'] . '" />';
+    $id = htmlspecialchars( $badge['id'] );
+    $name = htmlspecialchars( $badge['name'] );
+    $output .= '<a href="https://badges.fedoraproject.org/badge/' . $id . '" class="badge" title="' . $name . '">';
+    $output .= '  <img height="50" width="50" src="' . $badge['image'] . '" alt="' . $name . '" />';
     $output .= '</a>';
   }
 
@@ -59,5 +61,5 @@ function FedoraBadgesCountFunction( $parser, $username = '' ) {
     return array ( 'Failed to decode JSON.', 'isHTML' => true );
   }
 
-  return count ( $json_decoded['assertions'] );
+  return count( $json_decoded['assertions'] );
 }
