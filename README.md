@@ -19,32 +19,24 @@ It also links each badge to its respective information page.
 This simply displays a number (>= 0) which is the number of Fedora Badges that
 $username has received.
 
-## Why is it so slow/How does its caching work/Is it realtime?
+## How's it work?
 
-Right now mw-FedoraBadges uses the MediaWiki caching system, which means that
-information shown is not realtime (and could be up to 24 hours out of date, by
-default).
+It now queries the tahrir database directly, because it's faster than going through
+the tahrir API.
 
-The reason for this is that the `/user/$some_id/json` endpoint is rather slow
-which can slow down wiki page loading to almost impractical levels. How slow
-the endpoint is currently increases as a user earns more badges.
-
-Once this bug is fixed in [tahrir](https://github.com/fedora-infra/tahrir), we
-can probably disable caching of badge information, so that it is realtime.
-
-If you really want to see the latest information, you can purge your user page's
-cache by appending `?action=purge` to the URL.
 
 ## How do I enable it?
 
 Clone this repository to `extensions/FedoraBadges`, then in `LocalSettings.php`,
-add the following line:
+add the following lines:
 
 ```
-require_once "$IP/extensions/FedoraBadges/FedoraBadges.php";
+# Fedora Badges Extension
+$wgFedoraBadgesDSN = "pgsql:host=db.myhost.com;port=5432;dbname=tahrir;user=tahrir-readonly;password=sekritpassword";
+require_once( "$IP/extensions/FedoraBadges/FedoraBadges.php" );
 ```
 
 ## License
 
 MIT License. (c) 2013 Red Hat, Inc.
-Written by Ricky Elrod.
+Written by Rick Elrod.
