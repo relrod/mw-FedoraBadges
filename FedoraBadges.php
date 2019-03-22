@@ -19,23 +19,22 @@ function FedoraBadgesSetupParserFunction( &$parser ) {
 }
 
 function FedoraBadgesFunction( $parser, $username = '' ) {
-  // TODO
-  // Ideally, we'll disable the cache so that these are loaded in realtime.
-  // But right now the JSON endpoint is slower than I'd like it to be.
-  // So for now, let it cache as normal, and later on we should fix this.
-  // In practice, this means that badges displayed on user pages might be up to
-  // 24-hours out of date.
-  //$parser->disableCache();
+  global $wgFedoraBadgesDSN;
 
-  $json = @file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
-  $json_decoded = json_decode( $json, true );
-  if ( $json_decoded === NULL ) {
-    return array ( 'Failed to decode JSON.', 'isHTML' => true );
-  }
+  $parser->disableCache();
 
+  $options = array(
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+  );
+  $pdo = new PDO( $wgFedoraBadgesDSN );
+  $query = $pdo->prepare( 'select b.* from badges b, assertions a where b.id=a.badge_id and a.person_id=(select id from persons where nickname=?)' );
+  $query->execute( array( $username ) );
+  $res = $query->fetchAll();
   $output = '';
 
-  foreach ($json_decoded['assertions'] as $badge) {
+  foreach ( $res as $badge ) {
     $id = htmlspecialchars( $badge['id'] );
     $name = htmlspecialchars( $badge['name'] );
     $output .= '<a href="https://badges.fedoraproject.org/badge/' . $id . '" class="badge" title="' . $name . '">';
@@ -47,19 +46,18 @@ function FedoraBadgesFunction( $parser, $username = '' ) {
 }
 
 function FedoraBadgesCountFunction( $parser, $username = '' ) {
-  // TODO
-  // Ideally, we'll disable the cache so that these are loaded in realtime.
-  // But right now the JSON endpoint is slower than I'd like it to be.
-  // So for now, let it cache as normal, and later on we should fix this.
-  // In practice, this means that badges displayed on user pages might be up to
-  // 24-hours out of date.
-  //$parser->disableCache();
+  global $wgFedoraBadgesDSN;
 
-  $json = @file_get_contents( 'https://badges.fedoraproject.org/user/' . urlencode( $username ) . '/json' );
-  $json_decoded = json_decode( $json, true );
-  if ( $json_decoded === NULL ) {
-    return array ( 'Failed to decode JSON.', 'isHTML' => true );
-  }
+  $parser->disableCache();
+  $options = array(
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+  );
+  $pdo = new PDO( $wgFedoraBadgesDSN );
+  $query = $pdo->prepare( 'select count(*) from assertions where person_id=(select id from persons where nickname=?)' );
+  $query->execute( array( $username ) );
+  $res = $query->fetchColumn();
 
-  return count( $json_decoded['assertions'] );
+  return $res;
 }
